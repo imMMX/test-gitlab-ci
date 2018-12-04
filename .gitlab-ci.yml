@@ -38,7 +38,7 @@ fetch:
 
 prod:
   stage: prod
-tags:
+  tags:
     - aws-cn
   script:
     - docker build --pull -t "$CI_REGISTRY_IMAGE" .
@@ -48,7 +48,7 @@ tags:
 
 build:
   stage: build
-tags:
+  tags:
     - builder251
   script:
     - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
