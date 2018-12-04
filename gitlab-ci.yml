@@ -6,7 +6,36 @@ services:
 before_script:
   - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
 
-build-master:
+stages:
+- fetch
+- build
+- prod
+
+variables:
+  GIT_DEPTH: "3"
+  GITHUB_REPO: "https://github.com/imMMX/test-gitlab-ci.git"
+
+fetch:
+  stage: fetch
+  script:
+    - apk --update add git wget unzip zip nginx
+
+    # https://docs.gitlab.com/ee/ci/ssh_keys/README.html
+    - 'which ssh-agent || ( apk --update add openssh-client bash)'
+    - eval $(ssh-agent -s)
+
+    - DATE=$(date +%Y-%m-%d)
+    - echo $DATE
+    - git clone $GITHUB_REPO $CI_PROJECT_NAME
+    - cd $CI_PROJECT_NAME
+    - git remote add gitlab git@git.ubnt.com.cn:$CI_PROJECT_PATH.git
+    - git push gitlab master
+    - git tag -a v${DATE}_Origin -m "$DATE"
+    - git push gitlab master
+  tags:
+    - builder251
+
+prod:
   stage: prod
 tags:
     - aws-cn
