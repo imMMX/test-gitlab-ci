@@ -19,7 +19,7 @@ variables:
 fetch:
   stage: fetch
   script:
-    - apk --update add git wget unzip zip nginx
+    - apk --update add git wget unzip zip
 
     # https://docs.gitlab.com/ee/ci/ssh_keys/README.html
     - 'which ssh-agent || ( apk --update add openssh-client bash)'
