@@ -8,9 +8,9 @@ before_script:
   - export IMAGE_TAG=$(echo -en $CI_COMMIT_REF_NAME | tr -c '[:alnum:]_.-' '-')
 
 stages:
-- fetch
-- build
-- prod
+  - fetch
+  - build
+  - prod
 
 variables:
   GIT_DEPTH: "3"
